@@ -1,0 +1,76 @@
+Factory Method is a Creational Design Pattern that defines a method for creating an
+object, but allows subclasses to decide which concrete object should actually be created.
+
+Client
+   |
+   ↓
+Factory Method
+   |
+   ├──> Product A
+   ├──> Product B
+   └──> Product C
+
+Instead of writing:
+
+payment = CreditCardPayment()
+
+everywhere in your application, you can have:
+
+payment = PaymentFactory.create_payment("credit_card")
+
+
+                    Payment
+                       ↑
+             ┌─────────┼─────────┐
+             │         │         │
+        CreditCard    UPI      PayPal
+             ↑         ↑         ↑
+             └─────────┼─────────┘
+                       |
+                  Factory Method
+                       |
+                   OrderService
+
+The service doesn't need to know the concrete implementation.
+
+======================
+
+Simple Factory vs Factory Method
+
+Many developers call the above implementation "Factory Method," but strictly speaking,
+there is a difference.
+
+> Simple Factory
+
+One factory contains logic such as:
+
+if type == "upi":
+    return UPIPayment()
+
+> Factory Method
+
+The creation method is defined in a base creator, and subclasses override it to decide
+which product to create.
+
+That is the classic GoF Factory Method pattern.
+
+             Product
+                ↑
+        ┌───────┴────────┐
+        │                │
+ ConcreteProductA  ConcreteProductB
+
+
+             Creator
+                ↑
+        ┌───────┴────────┐
+        │                │
+ConcreteCreatorA  ConcreteCreatorB
+        │                │
+        └───────┬────────┘
+                ↓
+          factory_method()
+
+
+The biggest benefit: loose coupling
+

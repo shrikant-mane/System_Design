@@ -1,0 +1,128 @@
+1. What is the Singleton Design Pattern?
+
+The Singleton Design Pattern is a creational design pattern that ensures:
+
+A class has exactly one instance throughout the application and provides a global
+ access point to that instance.
+
+
+Application
+     |
+     +----> Singleton Object
+     |          ↑
+     |          |
+     +----------+
+     |
+     +----> same object
+     |
+     +----> same object
+
+
+eg:
+   without Singletone
+
+Service A → Database Connection 1
+Service B → Database Connection 2
+Service C → Database Connection 3
+Service D → Database Connection 4
+
+You may unnecessarily create multiple objects managing the same resource.
+
+    with Singletone
+                 +----------------+
+Service A ------>|                |
+Service B ------>|   DB Manager   |
+Service C ------>|   Singleton    |
+Service D ------>|                |
+                 +----------------+
+
+Everybody uses the same manager instance.
+
+======================
+
+Core characteristics
+
+A Singleton generally has three important characteristics.
+
+1. Private/controlled construction
+The application should not freely create multiple instances.
+
+2. One instance
+The class maintains one instance.
+
+3. Global access point
+There is a standard way to access that instance.
+
+======================
+
+Singleton using a class method
+
+Singleton using a metaclass
+    - For advanced Python development, Singleton behavior can be moved into a metaclass.
+
+
+Singleton and multithreading
+    - Thread-safe Singleton
+
+=============
+Difference
+Factory → object selection/creation
+Singleton → instance uniqueness
+
+==============
+Why Singleton can be dangerous
+    - Hidden dependency
+    — Testing becomes harder
+    — Global mutable state
+    — Concurrency
+    — Lifecycle problems
+
+             Singleton
+                 |
+        +--------+--------+
+        |                 |
+   _instance          get_instance()
+        |                 |
+        +--------+--------+
+                 |
+                 ↓
+          Single Object
+
+
+===========================
+When SHOULD you use Singleton?
+
+Use Singleton when all of the following are reasonably true:
+
+1. There should genuinely be one instance
+
+For example, a process-level registry or coordinator.
+
+2. The object has meaningful shared state/behavior
+
+If the object has no state, static functions may be simpler.
+
+3. Global access is actually desirable
+
+Don't introduce global access merely for convenience.
+
+4. Its lifecycle is well understood
+
+You know when it starts and when it should be cleaned up.
+
+| Advantage           | Explanation                              |
+| ------------------- | ---------------------------------------- |
+| One instance        | Prevents unnecessary duplicate instances |
+| Controlled creation | Centralizes object creation              |
+| Global access       | Easy access from different components    |
+| Shared state        | Useful for process-wide state            |
+| Resource management | Can coordinate certain shared resources  |
+| Lazy creation       | Object can be created only when required |
+
+================================
+Singleton is a creational pattern, not a general-purpose "global variable" mechanism.
+It is appropriate when the application truly needs a single process-scoped instance,
+but in modern Python applications, dependency injection, framework-managed lifecycles,
+connection pools, and external shared stores such as Redis often provide a cleaner architecture.
+
+

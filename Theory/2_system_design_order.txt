@@ -1,0 +1,39 @@
+Level 1 — Foundation
+1. Client-Server
+2. Request-Response
+3. REST
+4. Load Balancing
+5. Caching
+
+
+Level 2 — Microservices
+6. API Gateway
+7. Service Discovery
+8. Database per Service
+9. Event-Driven Architecture
+10. Message Queue
+
+
+Level 3 — Distributed Systems
+11. Saga
+12. Transactional Outbox
+13. CQRS
+14. Event Sourcing
+
+
+Level 4 — Reliability
+15. Retry
+16. Timeout
+17. Circuit Breaker
+18. Bulkhead
+19. Rate Limiter
+
+
+Level 5 — Advanced
+20. Sharding
+21. Read Replicas
+22. Strangler Fig
+23. Sidecar
+24. BFF
+25. Anti-Corruption Layer
+

@@ -1,0 +1,56 @@
+SYSTEM DESIGN PATTERNS
+│
+├── 1. Communication
+│   ├── Request-Response
+│   ├── Pub/Sub
+│   ├── Event-Driven
+│   └── Message Queue
+│
+├── 2. Microservices
+│   ├── API Gateway
+│   ├── Service Discovery
+│   ├── Database per Service
+│   ├── BFF
+│   ├── Sidecar
+│   └── Strangler Fig
+│
+├── 3. Distributed Transactions
+│   ├── Saga
+│   ├── Two-Phase Commit
+│   └── Transactional Outbox
+│
+├── 4. Data
+│   ├── CQRS
+│   ├── Event Sourcing
+│   ├── Cache-Aside
+│   ├── Read Replica
+│   ├── Sharding
+│   └── Materialized View
+│
+├── 5. Scalability
+│   ├── Load Balancer
+│   ├── Horizontal Scaling
+│   ├── Caching
+│   ├── CDN
+│   └── Sharding
+│
+├── 6. Resilience
+│   ├── Retry
+│   ├── Timeout
+│   ├── Circuit Breaker
+│   ├── Bulkhead
+│   ├── Rate Limiter
+│   └── Fallback
+│
+├── 7. Integration
+│   ├── Adapter
+│   ├── Anti-Corruption Layer
+│   ├── API Composition
+│   └── Strangler Fig
+│
+└── 8. Security
+    ├── JWT
+    ├── OAuth 2.0
+    ├── RBAC
+    ├── Zero Trust
+    └── API Security

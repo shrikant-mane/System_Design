@@ -1,0 +1,17 @@
+Creational → How objects are created
+Structural → How classes/objects are combined
+Behavioral → How objects communicate and behave
+
+Creational = Create → Structural = Connect → Behavioral = Communicate
+
+=============================
+Creational Design Patterns
+
+| Pattern              | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
+|   Singleton          | Ensure only one instance exists                |
+|   Factory Method     | Let subclasses decide which object to create   |
+|   Abstract Factory   | Create families of related objects             |
+|   Builder            | Construct complex objects step by step         |
+|   Prototype          | Create new objects by copying existing objects |
+

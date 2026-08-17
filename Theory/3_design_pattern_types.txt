@@ -1,0 +1,21 @@
+Design Patterns
+│
+├── Creational
+│   ├── Singleton
+│   ├── Factory Method
+│   ├── Abstract Factory
+│   ├── Builder
+│   └── Prototype
+│
+├── Structural
+│   ├── Adapter
+│   ├── Decorator
+│   ├── Facade
+│   └── Proxy
+│
+└── Behavioral
+    ├── Observer
+    ├── Strategy
+    ├── Command
+    └── State
+

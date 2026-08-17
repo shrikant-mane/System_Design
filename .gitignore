@@ -1,0 +1,19 @@
+
+*.pyc
+.DS_Store
+*.log
+# PyCharm
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env/
+
+# macOS
+.DS_Store

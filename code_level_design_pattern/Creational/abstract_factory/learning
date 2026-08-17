@@ -1,0 +1,122 @@
+What is Abstract Factory?
+
+Abstract Factory is a creational design pattern that provides an interface for
+creating families of related or dependent objects without specifying their concrete
+classes.
+
+===================
+There are two important words:
+
+Factory → responsible for creating objects.
+Abstract → the client works with abstractions rather than concrete implementations.
+
+Factory Method → creates ONE type of product.
+Abstract Factory → creates a FAMILY of related products.
+=====================
+
+
+The critical difference from Factory Method is:
+
+Factory Method generally focuses on creating one product, while Abstract Factory
+creates a family of related products.
+
+=======================
+
+Why do we need Abstract Factory?
+
+Imagine you're developing an application that supports two cloud providers:
+
+AWS
+Azure
+
+Your application needs three infrastructure components:
+
+Database
+Storage
+Message Queue
+
+For AWS:
+
+AWS
+├── AWS Database
+├── AWS Storage
+└── AWS Queue
+
+For Azure:
+
+Azure
+├── Azure Database
+├── Azure Storage
+└── Azure Queue
+
+The important requirement is:
+
+If the application chooses AWS, all infrastructure components should be AWS-compatible.
+
+Similarly:
+
+If the application chooses Azure, all infrastructure components should be Azure-compatible.
+
+This is a family of related objects.
+
+That's where Abstract Factory becomes useful.
+
+
+                    CloudFactory
+                         |
+            +------------+------------+
+            |                         |
+       AWSFactory                AzureFactory
+            |                         |
+      +-----+-----+             +-----+-----+
+      |     |     |             |     |     |
+      ↓     ↓     ↓             ↓     ↓     ↓
+     DB   Storage Queue        DB   Storage Queue
+
+
+==============================
+The four major participants
+
+Abstract Factory usually has these components:
+
+1. Abstract Factory
+2. Concrete Factory
+3. Abstract Products
+4. Concrete Products
+
+===============================
+
+Advantages of Abstract Factory
+1. Supports product families
+This is its biggest strength.
+
+2. Ensures product compatibility
+Related objects can be created consistently.
+
+3. Reduces coupling
+Client doesn't know concrete implementations.
+
+4. Supports dependency inversion
+Clients depend on abstractions.
+
+5. Easy to switch environments/providers
+
+=============================
+
+Factory Method
+      ↓
+Individual creation method
+
+Abstract Factory
+      ↓
+Collection of creation methods
+      ↓
+Creates a related product family
+
+===========================
+
+| Pattern          | Main purpose                        |
+| ---------------- | ----------------------------------- |
+| Singleton        | Ensure one instance                 |
+| Factory Method   | Delegate creation of a product      |
+| Abstract Factory | Create a family of related products |
