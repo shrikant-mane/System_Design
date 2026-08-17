@@ -1,0 +1,45 @@
+ACID stands for:
+
+A → Atomicity
+C → Consistency
+I → Isolation
+D → Durability
+
+==================
+Atomicity
+==================
+Atomicity means that either the entire transaction succeeds or the entire transaction fails.
+
+Transaction
+     ↓
+A - ₹1,000     ✅
+B + ₹1,000     ❌
+     ↓
+ROLLBACK
+     ↓
+Everything is undone
+
+
+==================
+Consistency
+==================
+
+Consistency means that a transaction must preserve all database rules and constraints.
+
+The transaction should fail rather than leave the database in an invalid state.
+
+
+===============
+Isolation
+===============
+
+Transaction A
+      ↓
+    Book
+      ↑
+Transaction B
+
+================
+Durability
+================
+Commited data stays

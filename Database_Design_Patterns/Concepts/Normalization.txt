@@ -1,0 +1,244 @@
+Normalization is the process of organizing data into multiple related tables to:
+
+Reduce duplicate data
+Avoid data inconsistency
+Prevent insert, update, and delete anomalies
+Make the database easier to maintain
+
+
+1NF → Atomic values
+ ↓
+2NF → Remove partial dependency
+ ↓
+3NF → Remove transitive dependency
+ ↓
+BCNF → Stronger form of 3NF
+
+Normalization means breaking a large table into smaller related tables to reduce
+redundancy and maintain data integrity.
+
+
+==========================
+1NF — First Normal Form
+==========================
+
+1NF (First Normal Form) is the first level of database normalization.
+
+The main goal of 1NF is to make sure that every column contains atomic (single) values
+and that there are no repeating groups.
+
+Simple definition
+
+A table is in 1NF if every cell contains exactly one value, there are no repeating groups,
+and each row can be uniquely identified.
+
+Not atomic:
+| Student_ID | Name  | Phone                  |
+| ---------- | ----- | ---------------------- |
+| 101        | Rahul | 9876543210, 9123456780 |
+
+
+Convert it to 1NF:
+| Student_ID | Name  | Phone      |
+| ---------- | ----- | ---------- |
+| 101        | Rahul | 9876543210 |
+| 101        | Rahul | 9123456780 |
+
+
+====================================
+2NF — Second Normal Form
+====================================
+
+A table is in 2NF if it is already in 1NF and every non-key attribute is fully dependent
+on the entire primary key, not just a part of it.
+
+
+Before understanding 2NF, you need to understand a composite primary key.
+
+A composite primary key contains more than one column.
+
+For example:
+
+PRIMARY KEY (student_id, course_id)
+
+Here:
+student_id + course_id
+        ↓
+   Unique row
+
+A student can enroll in multiple courses, and a course can have multiple students.
+
+| student_id | course_id | marks |
+| ---------: | --------: | ----: |
+|        101 |         1 |    85 |
+|        101 |         2 |    90 |
+|        102 |         1 |    75 |
+
+
+-----
+Partial Dependency
+-----
+Partial dependency occurs when a non-key attribute depends on only a part of a composite
+primary key.
+
+| student_id | course_id | student_name | course_name | marks |
+| ---------: | --------: | ------------ | ----------- | ----: |
+|        101 |         1 | Rahul        | Python      |    85 |
+|        101 |         2 | Rahul        | Django      |    90 |
+|        102 |         1 | Amit         | Python      |    75 |
+
+Now let's analyze each column.
+
+student_name: Does student_name depend on:
+student_id + course_id
+
+===>No.
+
+We only need:
+student_id
+
+to know the student name.
+Therefore:
+student_id → student_name
+
+This is partial dependency.
+
+course_name
+Similarly:
+course_id → course_name
+
+-----
+marks
+
+Now consider marks.
+To know the marks, we need both:
+student_id + course_id
+
+For example:
+101 + 1 → 85
+101 + 2 → 90
+
+Therefore:
+(student_id, course_id) → marks
+
+This is a full dependency.
+
+-----
+             Composite Primary Key
+              /              \
+             /                \
+      student_id            course_id
+          ↓                     ↓
+    student_name          course_name
+
+
+      student_id + course_id
+                ↓
+              marks
+
+fo the first two dependencies are problematic:
+
+student_id → student_name       ❌
+course_id → course_name         ❌
+
+Because they depend on only part of the composite key.
+
+But:
+(student_id, course_id) → marks  ✅
+is correct.
+
+Therefore, the table is not in 2NF.
+
+2NF Table
+
+CREATE TABLE student_course (
+    student_id INT,
+    course_id INT,
+    marks INT,
+
+    PRIMARY KEY (student_id, course_id),
+
+    FOREIGN KEY (student_id)
+        REFERENCES student(student_id),
+
+    FOREIGN KEY (course_id)
+        REFERENCES course(course_id)
+);
+
+| student_id | course_id | marks |
+| ---------: | --------: | ----: |
+|        101 |         1 |    85 |
+|        101 |         2 |    90 |
+|        102 |         1 |    75 |
+
+
+===> Important: 2NF Mainly Matters with Composite Keys
+
+| Normal Form | Removes                    |
+| ----------- | -------------------------- |
+|   1NF       | Multiple/non-atomic values |
+|   2NF       | Partial dependency         |
+|   3NF       | Transitive dependency      |
+
+---------------------------------
+Easy Way to Remember 2NF
+
+Think:
+
+"The whole key, not part of the key."
+
+For a composite key:
+
+PRIMARY KEY (A, B)
+
+Every non-key column should depend on:
+A + B
+
+not just:
+A or B
+
+
+=============================
+3NF — Third Normal Form
+=============================
+Def: 3NF stands for Third Normal Form. A table must first be in 2NF, and it should not
+contain transitive dependency.
+
+What is Transitive Dependency?
+
+A transitive dependency occurs when:
+A → B
+B → C
+
+Therefore:
+A → C
+where B is a non-key attribute.
+
+example:
+Employee_ID → Department_ID
+Department_ID → Department_Name
+
+Therefore:
+Employee_ID → Department_Name
+
+This is a transitive dependency.
+
+Example:
+Transitive dependency:
+| Student_ID | Student_Name | Department_ID | Department_Name |
+| ---------: | ------------ | ------------: | --------------- |
+|          1 | Rahul        |            10 | Computer        |
+|          2 | Amit         |            10 | Computer        |
+|          3 | Priya        |            20 | Mechanical      |
+
+student_name -> student id
+student id -> department id
+department id -> department name
+
+Non Transitive dependency
+| Student_ID | Student_Name | Department_ID |
+| ---------: | ------------ | ------------: |
+|          1 | Rahul        |            10 |
+|          2 | Amit         |            10 |
+|          3 | Priya        |            20 |
+

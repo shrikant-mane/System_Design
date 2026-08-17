@@ -1,0 +1,55 @@
+Decorator is a structural design pattern that dynamically adds responsibilities or
+behavior to an object without modifying its original class.
+
+The important words are:
+Structural → dynamically → add behavior → without modifying original class
+
+
+========================
+
+Think about ordering a coffee.
+
+Start with:
+Coffee
+₹100
+
+Add milk:
+Coffee
+  +
+Milk
+₹120
+
+Add sugar:
+Coffee
+  +
+Milk
+  +
+Sugar
+₹130
+
+Add whipped cream:
+Coffee
+  +
+Milk
+  +
+Sugar
+  +
+Whipped Cream
+₹160
+
+You don't create:
+CoffeeWithMilk
+CoffeeWithMilkAndSugar
+CoffeeWithMilkSugarAndCream
+
+Instead, you decorate the coffee.
+WhippedCream
+     ↓
+   Sugar
+     ↓
+    Milk
+     ↓
+   Coffee
+
+This is the core idea behind the Decorator Pattern.
+

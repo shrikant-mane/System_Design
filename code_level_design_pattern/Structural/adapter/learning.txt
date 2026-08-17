@@ -44,3 +44,9 @@ Structural → incompatible interfaces → convert interface → client
         │ class       │
         └─────────────┘
 
+
+Adapter is a structural design pattern used when two components have incompatible
+interfaces. It acts as a bridge between the client and an existing class by converting
+the existing class's interface into the interface expected by the client.
+A common real-world example is integrating different third-party payment providers that
+expose different APIs behind a common payment interface
