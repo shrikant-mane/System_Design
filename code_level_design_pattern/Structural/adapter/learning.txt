@@ -1,0 +1,46 @@
+What is an Adapter?
+
+An Adapter is an object that sits between two incompatible interfaces and converts one
+interface into another interface that the client understands.
+
+
+Wall Socket
+    │
+    │ 220V AC
+    ↓
+┌───────────┐
+│  Adapter  │
+└───────────┘
+    │
+    │ 5V DC
+    ↓
+   Phone
+
+The adapter doesn't fundamentally change what the phone does.
+It converts the interface/format so that the two systems can work together.
+
+
+Structural → incompatible interfaces → convert interface → client
+
+
+             Client
+               │
+               ↓
+        ┌─────────────┐
+        │   Target    │
+        │  Interface  │
+        └─────────────┘
+               ↑
+               │ implements
+        ┌─────────────┐
+        │   Adapter   │
+        └─────────────┘
+               │
+               │ uses
+               ↓
+        ┌─────────────┐
+        │   Adaptee   │
+        │ Existing    │
+        │ class       │
+        └─────────────┘
+

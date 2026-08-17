@@ -1,0 +1,97 @@
+Creational → How objects are created
+Structural → How classes/objects are combined
+Behavioral → How objects communicate and behave
+
+Creational = Create → Structural = Connect → Behavioral = Communicate
+
+=============================
+1. Creational Design Patterns
+=============================
+
+| Pattern              | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
+|   Singleton          | Ensure only one instance exists                |
+|   Factory Method     | Let subclasses decide which object to create   |
+|   Abstract Factory   | Create families of related objects             |
+|   Builder            | Construct complex objects step by step         |
+|   Prototype          | Create new objects by copying existing objects |
+
+
+===========================
+2. Structural Design Patterns
+===========================
+Structural patterns deal with how classes and objects are structured and connected.
+
+Main question:
+"How can I combine different classes/objects to build a larger structure?"
+
+Imagine you already have objects:
+
+Object A
+Object B
+Object C
+
+Structural patterns help you organize/connect them:
+
+Object A ---> Object B ---> Object C
+
+
+| Pattern       | Purpose                                             |
+| ------------- | --------------------------------------------------- |
+|   Adapter     | Make incompatible interfaces work together          |
+|   Decorator   | Add functionality to an existing object dynamically |
+|   Facade      | Provide a simple interface over a complex system    |
+|   Proxy       | Control access to another object                    |
+|   Composite   | Treat individual objects and groups uniformly       |
+|   Bridge      | Separate abstraction from implementation            |
+|   Flyweight   | Share objects to reduce memory usage                |
+
+
+============================
+3. Behavioral Design Patterns
+============================
+
+Behavioral patterns deal with communication, responsibility, and interaction between objects.
+
+eg:
+User
+ ↓
+Order
+ ↓
+Payment
+ ↓
+Notification
+
+
+| Pattern                     | Purpose                                                                 |
+| --------------------------- | ----------------------------------------------------------------------- |
+|   Observer                  | Notify dependent objects when something changes                         |
+|   Strategy                  | Select an algorithm/behavior dynamically                                |
+|   Command                   | Encapsulate a request as an object                                      |
+|   State                     | Change behavior based on object state                                   |
+|   Template Method           | Define algorithm structure while allowing subclasses to customize steps |
+|   Chain of Responsibility   | Pass a request through a chain of handlers                              |
+|   Mediator                  | Centralize communication between objects                                |
+|   Iterator                  | Traverse a collection                                                   |
+|   Visitor                   | Add operations without modifying object structures                      |
+|   Memento                   | Capture and restore an object's state                                   |
+|   Interpreter               | Define/evaluate a language grammar                                      |
+
+
+========================================
+
+                 DESIGN PATTERNS
+                       │
+          ┌────────────┼────────────┐
+          ↓            ↓            ↓
+     CREATIONAL    STRUCTURAL   BEHAVIORAL
+          │            │            │
+       CREATE        CONNECT      COMMUNICATE
+          │            │            │
+       "What        "How do       "How do
+       object       objects       objects
+       should       work          interact?"
+       I create?"   together?"
+
+
+
