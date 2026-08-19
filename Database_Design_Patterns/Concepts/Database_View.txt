@@ -1,0 +1,22 @@
+A View is a virtual table created from the result of a SQL query.
+    ---It does not normally store the actual data itself. Instead, it stores the SQL query
+    definition. Whenever you query the view, the database uses that underlying query to
+    retrieve the current data.
+
+CREATE VIEW comp_book_view AS
+SELECT * FROM books
+WHERE department_id = 1;
+
+select * from comp_book_view;
+
+
+| Feature                                | Table                               | View                                                                |
+| -------------------------------------- | ----------------------------------- | ------------------------------------------------------------------- |
+| Stores data                            | Yes                                 | Usually no                                                          |
+| Stores query definition                | No                                  | Yes                                                                 |
+| Can use SELECT                         | Yes                                 | Yes                                                                 |
+| Can contain JOIN                       | Yes                                 | Yes                                                                 |
+| Takes storage                          | Data + indexes                      | Usually very little metadata storage                                |
+| Automatically reflects underlying data | N/A                                 | Yes                                                                 |
+| Can be indexed                         | Depends on DB / specialized feature | Normal views generally no; materialized/indexed views are different |
+

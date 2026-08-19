@@ -1,0 +1,55 @@
+
+Query Optimization is the process of modifying a database query and its underlying structure
+to make it execute as fast as possible using the fewest system resources.
+
+==================
+1. Avoid SELECT *
+-- Bad
+SELECT * FROM Employees WHERE department_id = 5;
+
+-- Good
+SELECT first_name, email FROM Employees WHERE department_id = 5;
+
+=================
+2. Replace OR with UNION ALL (When Indexing Fails)
+
+SELECT * FROM books WHERE department_id =2 OR available_copy > 10;
+
+SELECT * FROM books WHERE department_id = 2
+UNION ALL
+SELECT * FROM books WHERE available_copy > 10;
+
+===================
+3. Use EXIST instead of IN for Subqueries
+
+SELECT * FROM books WHERE department_id
+	IN(
+		SELECT id FROM departments
+		WHERE department_name = 'Computer Science'
+);
+
+SELECT * FROM books b WHERE EXISTS(
+	SELECT 1 FROM departments d
+	WHERE d.id = b.department_id
+	AND d.department_name = 'Computer Science'
+);
+
+====================
+
+4. Optimize Wildcard Lookups (LIKE)
+
+--bad
+SELECT * FROM departments WHERE department_name LIKE '%Science';
+
+--good
+SELECT * FROM departments WHERE department_name LIKE 'Computer%';
+
+=====================
+
+5. The Developer's Toolkit: EXPLAIN
+
+EXPLAIN SELECT * FROM departments WHERE department_name LIKE 'Computer%';
+
+======================
+
+

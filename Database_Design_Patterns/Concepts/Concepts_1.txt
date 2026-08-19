@@ -1,0 +1,200 @@
+What is a Transaction in a Database?
+
+A transaction in a database is a group of one or more database operations that are treated
+as a single unit of work.
+
+Either all operations in a transaction should succeed, or none of them should take effect.
+
+BEGIN;
+
+UPDATE accounts
+SET balance = balance - 1000
+WHERE id = 1;
+
+UPDATE accounts
+SET balance = balance + 1000
+WHERE id = 2;
+
+COMMIT;
+
+=============================
+
+What is Deadlock in a Database?
+
+A deadlock occurs when two or more transactions are waiting for each other to release resources,
+and as a result, none of them can continue.
+
+EXAMPLE:
+Transaction A is waiting for Transaction B, while Transaction B is waiting for Transaction A.
+
+============================
+
+Optimistic Locking
+
+Optimistic locking says:
+       --- "I don't expect another transaction to modify this record while I'm working.
+        I'll check before saving."
+
+There is generally no database row lock held while the application is reading/working.
+
+Instead, we keep a version number or check the original value when updating.
+
+              Book
+               |
+        version = 5
+          /         \
+         /           \
+      User A        User B
+         |             |
+    Read version 5  Read version 5
+         |             |
+       Update        Update
+         |             |
+      SUCCESS        FAILED
+      version 6      version mismatch
+
+
+ORM :
+
+updated = Book.objects.filter(
+    id=book_id,
+    version=old_version
+).update(
+    available_copy=0,
+    version=old_version + 1
+)
+
+=============================
+
+Pessimistic Locking
+
+Pessimistic locking takes the opposite approach.
+
+    --- "Someone else might modify this data, so I'll lock it before working with it."
+
+The database prevents conflicting transactions from modifying the locked row until the lock
+is released.
+
+ORM:
+with transaction.atomic():
+
+    book = Book.objects.select_for_update().get(id=1)
+
+    # borrow book
+
+select_for_update() obtains a row-level lock.
+
+
+================================
+
+What is the N+1 Query Problem?
+
+The N+1 Query Problem is a performance problem that occurs when an application executes:
+
+1 query to fetch N records + N additional queries to fetch related data for each record.
+
+So instead of making 1 or 2 efficient queries, the application makes N + 1 database queries.
+
+This is very common in Django ORM, especially when working with ForeignKey, OneToOneField,
+or reverse relationships.
+
+================================
+
+Database Connection Pool
+
+A Database Connection Pool is a collection of already-established database connections
+that an application keeps ready and reuses.
+
+Instead of creating a new database connection for every request, the application takes an
+available connection from the pool, uses it, and then returns it to the pool.
+
+              Connection Pool
+        ┌─────────────────────────┐
+        │ Connection 1            │
+        │ Connection 2            │
+        │ Connection 3            │
+        │ Connection 4            │
+        │ Connection 5            │
+        └─────────────────────────┘
+
+====================================
+
+What is Pagination in a Database?
+
+Pagination is the technique of dividing a large set of database records into smaller pages
+instead of returning all records at once.
+
+LIMIT & OFFSET
+OFFSET tells the database:
+    --"Skip this many rows before returning the result."
+
+--PAGE 1
+SELECT *
+FROM books
+ORDER BY id
+LIMIT 10 OFFSET 0;
+
+--PAGE 2
+SELECT *
+FROM books
+ORDER BY id
+LIMIT 10 OFFSET 10;
+
+=================================
+What is Database Replication?
+
+Database replication is the process of copying data from one database server to one or
+more other database servers and keeping those copies synchronized.
+
+It is mainly used for:
+    High availability
+    Disaster recovery
+    Read scalability
+    Fault tolerance
+
+=================================
+
+What is Database Sharding?
+
+Database sharding is a technique for splitting a large database into smaller pieces called
+shards, where each shard stores a different portion of the data.
+
+    Sharding = Divide a large database into multiple smaller databases, with each database
+    containing a different subset of the data.
+
+==================================
+
+Suppose your application has 100 million users.
+
+Without sharding:
+
+                 Application
+                      |
+                      ↓
+                One Database
+                      |
+               100 Million Users
+
+As the data and traffic grow, this single database can become a bottleneck.
+
+With sharding:
+
+                    Application
+                         |
+          ┌──────────────┼──────────────┐
+          ↓              ↓              ↓
+       Shard 1        Shard 2        Shard 3
+       Users          Users          Users
+       1-33M          33M-66M        66M-100M
+
+=====================================
+
+
+
+
+
+
+
+
+
+

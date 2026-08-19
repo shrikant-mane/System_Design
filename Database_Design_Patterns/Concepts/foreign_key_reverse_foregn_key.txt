@@ -1,0 +1,38 @@
+Imagine a database for a blogging platform. We have a User table (the parent) and a
+Post table (the child)
+
+1. Foreign Key (Forward Lookup) A standard foreign key query starts at the child
+record and looks up the parent. You use this when you have a specific post and want to
+know who wrote it.
+
+SELECT Post.title, User.username
+FROM Post
+JOIN User ON Post.user_id = User.id
+WHERE Post.id = 102;
+
+
+2. Reverse Foreign Key (Reverse Lookup) A reverse foreign key query starts at the parent
+record and looks up all related children. You use this when you have a specific user and
+want to fetch all the posts they have written.
+
+SELECT User.username, Post.title
+FROM User
+JOIN Post ON User.id = Post.user_id
+WHERE User.id = 1;
+
+
+creating foreign key inside table
+
+CREATE TABLE departments (
+    id INTEGER PRIMARY KEY,
+    department_name VARCHAR(100),
+    location VARCHAR(100),
+    head_of_department VARCHAR(100)
+);
+
+CREATE TABLE new_book(
+	id INTEGER PRIMARY KEY,
+	book_name VARCHAR(200),
+	department_id INTEGER,
+	FOREIGN KEY (department_id)
+	REFERENCES departments(id));
