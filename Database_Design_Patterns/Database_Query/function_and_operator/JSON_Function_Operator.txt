@@ -1,0 +1,24 @@
+SELECT array_to_json('{{2,8},{79,111}}'::int[]);
+
+SELECT row_to_json(row(1, 'test', 2, 'close'));
+
+SELECT to_json('Rahul said "Ganesh."'::text);
+
+SELECT * FROM json_each('{"name":"Arav", "city":"pune"}');
+
+SELECT * FROM json_each_text('{"name":"Arav", "city":"pune"}');
+
+
+-- json_extract_path(from_json json, VARIADIC path_elems text[])
+
+SELECT json_extract_path('{"f2":{"f3":1},"f4":{"f5":99,"f6":"foo"}}','f2');
+
+SELECT json_extract_path('{"f2":{"f3":1},"f4":{"f5":99,"f6":"foo"}}','f4');
+
+SELECT json_object_keys('{"f1":"abc","f2":{"f3":"a", "f4":"b"}}');
+
+SELECT json_array_elements('[1,true, [2,false]]');
+
+
+
+

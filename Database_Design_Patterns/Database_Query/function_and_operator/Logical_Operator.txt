@@ -1,0 +1,27 @@
+-- Logical Operator (AND , OR, NOT)
+
+select * from student;
+-- AND
+SELECT * FROM STUDENT
+WHERE CITY = 'Pune'
+AND MARKS > 75;
+
+
+-- case sensitive
+SELECT * FROM STUDENT
+WHERE CITY = 'PUNE'
+AND MARKS > 75;
+
+
+--OR 
+SELECT * FROM STUDENT
+WHERE CITY = 'Pune'
+OR DEPARTMENT = 'Science';
+
+
+-- NOT
+SELECT * FROM STUDENT
+WHERE NOT CITY = 'Mumbai'
+AND NOT DEPARTMENT = 'Science';
+
+

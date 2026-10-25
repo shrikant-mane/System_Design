@@ -136,7 +136,7 @@ This is a full dependency.
                 ↓
               marks
 
-fo the first two dependencies are problematic:
+for the first two dependencies are problematic:
 
 student_id → student_name       ❌
 course_id → course_name         ❌

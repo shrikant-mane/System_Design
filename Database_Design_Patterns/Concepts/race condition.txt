@@ -1,0 +1,23 @@
+User A                         User B
+------                         ------
+BEGIN TRANSACTION              BEGIN TRANSACTION
+
+SELECT ... FOR UPDATE
+🔒 Lock book row
+
+available_copy = 1
+
+available_copy -= 1
+→ 0
+
+COMMIT
+🔓 Unlock
+
+                               SELECT ... FOR UPDATE
+                               🔒 Gets lock
+
+                               available_copy = 0
+
+                               ❌ Book unavailable
+
+

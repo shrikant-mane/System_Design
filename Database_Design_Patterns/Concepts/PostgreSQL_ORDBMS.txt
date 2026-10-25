@@ -1,0 +1,230 @@
+PostgreSQL is called an Object-Relational Database Management System (ORDBMS) because it combines two approaches:
+
+    1. Relational database features — tables, rows, columns, primary keys, foreign keys, SQL, and joins.
+    2. Object-oriented features — custom data types, composite types, inheritance, polymorphic functions, and extensibility.
+
++----------------+--------------------------+--------------------------------+----------------------+
+| Feature        | RDBMS                    | ORDBMS                         | OODBMS               |
++----------------+--------------------------+--------------------------------+----------------------+
+| Primary Model  | Tables and relations     | Tables + object extensions     | Objects              |
+| Custom Types   | Varies                   | Strong support                 | Native objects       |
+| Inheritance    | Usually not              | Supported                      | Supported            |
+| SQL            | Main query language      | Main query language            | Not necessarily      |
+| Example        | Traditional relational   | PostgreSQL                     | ObjectDB             |
+|                | systems                  |                                |                      |
++----------------+--------------------------+--------------------------------+----------------------+
+
+
+==========================
+Relational features in PostgreSQL
+
+Create Tables:
+    CREATE TABLE departments (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL
+    );
+
+    CREATE TABLE books (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(200) NOT NULL,
+        department_id INT REFERENCES departments(id)
+    );
+
+
+Insert operation:
+
+    INSERT INTO departments (name)
+    VALUES ('Computer Science'), ('Mathematics');
+
+    INSERT INTO books (title, department_id)
+    VALUES
+        ('Python Basics', 1),
+        ('Database Design', 1),
+        ('Linear Algebra', 2);
+
+
+Retrieve related data using a JOIN:
+    SELECT
+        books.title,
+        departments.name AS department
+    FROM books
+    JOIN departments
+        ON books.department_id = departments.id;
+
+
+=================================
+Object-oriented features in PostgreSQL
+
+## Feature 1 — User-defined types
+
+    CREATE TYPE address_type AS (
+        city VARCHAR(100),
+        state VARCHAR(100),
+        pincode VARCHAR(10)
+    );
+
+
+Inheritance: We can access address_type in students table
+
+    CREATE TABLE students (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100),
+        address address_type
+    );
+
+Insert:
+
+    INSERT INTO students (name, address)
+    VALUES (
+        'Rahul',
+        ROW('Pune', 'Maharashtra', '411001')::address_type
+    );
+
+
+Retrieve:
+
+    SELECT
+        name,
+        (address).city,
+        (address).state
+    FROM students;
+
+
+=============================
+Feature 2 — Table inheritance
+
+PostgreSQL also supports table inheritance.
+
+    CREATE TABLE persons (
+        id INT,
+        name VARCHAR(100)
+    );
+
+    CREATE TABLE employees (
+        salary NUMERIC(10, 2)
+    ) INHERITS (persons);
+
+
+Insert:
+
+    INSERT INTO persons VALUES (1, 'Rahul');
+
+    INSERT INTO employees
+    VALUES (2, 'Amit', 50000);
+
+Retrieve
+    SELECT *  FROM persons;
+
+
+=============================
+Feature 3 — Function overloading (polymorphism)
+    --> compile-time-style polymorphism through function overloading
+
+PostgreSQL supports function overloading: multiple functions can share a name while accepting different 
+argument types.
+
+    CREATE FUNCTION calculate_bonus(salary INTEGER)
+    RETURNS INTEGER
+    LANGUAGE SQL
+    AS $$
+        SELECT salary * 10 / 100;
+    $$;
+
+
+    CREATE FUNCTION calculate_bonus(salary NUMERIC)
+    RETURNS NUMERIC
+    LANGUAGE SQL
+    AS $$
+        SELECT salary * 0.15;
+    $$;
+
+    SELECT calculate_bonus(50000::INTEGER);
+    -- 5000
+
+    SELECT calculate_bonus(50000::NUMERIC);
+    -- 7500.00
+
+
+============================
+Feature 4 — Custom ENUM types
+
+PostgreSQL lets you define reusable domain-specific types.
+
+    CREATE TYPE book_status AS ENUM (
+        'available',
+        'issued',
+        'lost'
+    );
+
+
+    CREATE TABLE library_books (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(100),
+        status book_status NOT NULL
+    );
+
+
+Valid insertion:
+    INSERT INTO library_books (title, status)
+    VALUES ('Python Programming', 'available');
+
+Invalid insertion:
+    INSERT INTO library_books (title, status)
+    VALUES ('Java Programming', 'damaged');
+        -- damaged is not a valid value of book_status
+    
+
+=======================
+Feature 5 — Complex data types
+
+    CREATE TABLE courses (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100),
+        topics TEXT[]
+    );
+
+    INSERT INTO courses (name, topics)
+    VALUES (
+        'Backend Development',
+        ARRAY['Python', 'FastAPI', 'PostgreSQL']
+    );
+
+
+    SELECT name, topics[1]
+    FROM courses;
+
+
+# JSONB:
+
+    CREATE TABLE products (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        specifications JSONB
+    );
+
+
+    INSERT INTO products (name, specifications)
+    VALUES (
+        'Laptop',
+        '{"ram": "16GB", "storage": "512GB"}'
+    );
+
+
+    SELECT
+        name,
+        specifications->>'ram' AS ram
+    FROM products;
+
+
++----------------+---------------------------------------------------------------+
+| OOP Pillar     | PostgreSQL Support                                            |
++----------------+---------------------------------------------------------------+
+| Encapsulation  | Partial analogy through types, functions, schemas,            |
+|                | and privileges                                                |
++----------------+---------------------------------------------------------------+
+| Inheritance    | Native table inheritance                                      |
++----------------+---------------------------------------------------------------+
+| Polymorphism   | Function/operator overloading and polymorphic SQL types       |
++----------------+---------------------------------------------------------------+
+| Abstraction    | Views, functions, and custom types                            |
++----------------+---------------------------------------------------------------+

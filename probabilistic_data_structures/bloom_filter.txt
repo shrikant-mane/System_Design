@@ -1,0 +1,62 @@
+A Bloom Filter is a space-efficient, probabilistic data structure used to check whether an element might 
+exist or definitely does not exist in a collection.
+
+==============================
+Why do we need a Bloom Filter?
+    Imagine you have a FastAPI application with 10 million users stored in PostgreSQL.
+
+    A request comes in:
+        GET /users/99999999
+
+
+    Your application queries PostgreSQL:
+        SELECT * FROM users WHERE id = 99999999;
+
+
+If the user doesn't exist, the database still has to perform a lookup.
+
+For millions of requests containing nonexistent user IDs, this creates unnecessary database traffic.
+
+A Bloom Filter helps avoid many of these lookups.
+
+
+
+==============================
+How does a Bloom Filter work?
+
+A Bloom Filter uses two main components:
+    - Bit array (Bucket): An array containing only 0 and 1. 
+    - Hash functions: Multiple functions that map an element to positions in the bit array.
+
+Initial bit array(10 bit)(Bucket)
+    0000000000
+
+
+Step 1 — Insert an element
+    Suppose we insert "apple".
+    We use three hash functions:
+        - hash1("apple") → 2
+        - hash2("apple") → 5
+        - hash3("apple") → 8
+   
+    Hash positions: 2, 5, 8
+        0010010010
+
+    apple   => hash =>  0010010010
+    banana  => hash =>  0100010100
+    mango   => hash =>  0010100001
+    grape   => grape => 1001001000
+
+    result in Bucket => 1111111111 => all bits of bucket contains 1
+
+    Now if you try to insert 'orange'
+    orange => hash =>   0110000010 (1,2,8)
+    But as it check in bucket and check that 1,2,8 bit are already contains 1
+    So it it gives result as system contains 'orange' (Concept of False Positive)
+
+    
+Situation	                                                Possible?
+Element exists → Bloom Filter says possibly exists	        Yes
+Element doesn't exist → Bloom Filter says absent	        Yes
+Element doesn't exist → Bloom Filter says possibly exists	Yes — false positive
+Element exists → Bloom Filter says absent	                No — assuming correct implementation and synchronization

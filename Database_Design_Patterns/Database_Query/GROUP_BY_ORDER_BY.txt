@@ -1,0 +1,11 @@
+select 
+	count(*),
+	Round(avg(marks), 2) as avg_marks,
+	city 
+from student
+group by city
+having Round(avg(marks), 2) > 75
+order by 3 DESC;  -- 1,2,3 column number
+
+
+s

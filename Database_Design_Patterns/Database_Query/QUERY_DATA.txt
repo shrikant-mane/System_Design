@@ -1,0 +1,70 @@
+|   WHERE                                 |  HAVING                                |
+| --------------------------------------- | -------------------------------------- |
+| Filters rows                            | Filters groups                         |
+| Applied before   GROUP BY               | Applied after   GROUP BY               |
+| Normally used with individual columns   | Commonly used with aggregate functions |
+|   WHERE salary > 60000                  | HAVING AVG(salary) > 60000             |
+| Cannot normally use aggregate functions | Designed for aggregate conditions      |
+
+
+EMPLOYEE (ID, NAME, DEPARTMENT, SHIFT_TYPE, SALARY)
+
+
+
+SELECT * FROM EMPLOYEE;
+
+-- DESTINCT
+SELECT DISTINCT DEPARTMENT FROM EMPLOYEE;
+
+SELECT DISTINCT DEPARTMENT FROM EMPLOYEE ORDER BY DEPARTMENT;
+
+
+-- GROUP BY
+SELECT SHIFT_TYPE, COUNT(*) AS COUNT FROM EMPLOYEE GROUP BY SHIFT_TYPE;
+
+
+SELECT SHIFT_TYPE, COUNT(*) AS COUNT
+FROM EMPLOYEE
+GROUP BY SHIFT_TYPE
+HAVING COUNT(*) > 1;
+
+
+SELECT SHIFT_TYPE, COUNT(*) AS COUNT
+FROM EMPLOYEE
+GROUP BY SHIFT_TYPE
+HAVING COUNT(*) >= 1
+ORDER BY COUNT(*) DESC;
+
+
+SELECT
+	DEPARTMENT,
+	SUM(SALARY) "Salary",
+	AVG(SALARY) "Avg Salary",
+	MIN(SALARY) "Min Salary",
+	MAX(SALARY) "Max Salary"
+FROM EMPLOYEE
+GROUP BY DEPARTMENT;
+
+
+SELECT
+	DEPARTMENT,
+	SUM(SALARY) "Salary",
+	AVG(SALARY) "Avg Salary",
+	MIN(SALARY) "Min Salary",
+	MAX(SALARY) "Max Salary"
+FROM EMPLOYEE
+WHERE SHIFT_TYPE= 'GENERAL'
+GROUP BY DEPARTMENT;
+
+
+--ROUND()
+SELECT
+	DEPARTMENT,
+	ROUND(AVG(SALARY), 2)
+FROM EMPLOYEE
+GROUP BY DEPARTMENT
+HAVING AVG(SALARY)> 6000000;
+
+
+
+

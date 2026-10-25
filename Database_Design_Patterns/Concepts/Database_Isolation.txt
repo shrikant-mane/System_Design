@@ -1,0 +1,177 @@
+Database isolation levels define how much one database transaction is isolated from other
+concurrent transactions
+
+Transaction A                  Transaction B
+-------------                  -------------
+Read balance = ₹10,000          Read balance = ₹10,000
+Withdraw ₹5,000                 Withdraw ₹7,000
+
+you can get incorrect results.
+
+
+The four standard isolation levels
+
+====================
+1.  READ UNCOMMITTED
+====================
+
+lowest isolation level.
+
+A transaction may be able to read changes made by another transaction before they are committed.
+
+This is called a: Dirty read
+
+-------------
+    Example:
+
+    Transaction A
+    -------------
+    UPDATE account
+    SET balance = 5000;
+
+    Transaction B
+    -------------
+    SELECT balance;
+    → 5000
+
+    But then:
+
+    Transaction A
+    -------------
+    ROLLBACK;
+
+The actual balance goes back to its original value.
+
+Transaction B had read data that was never committed.
+
+
+
+====================
+2.  READ COMMITTED
+====================
+
+This is commonly used and is the default isolation level in PostgreSQL.
+
+A transaction can only see committed data from other transactions.
+
+    Example:
+
+    Transaction A
+    -------------
+    UPDATE balance = 5000
+    (not committed)
+
+    Transaction B
+    -------------
+    SELECT balance
+    → sees old value
+
+    If A commits:
+
+    Transaction A
+    -------------
+    COMMIT
+
+then a subsequent query by B can see: 5000
+
+So: Dirty reads → prevented
+
+----------------
+
+However, another problem can occur:
+
+* Non-repeatable read *
+
+    Transaction B:
+
+        SELECT balance → 10000
+
+    Transaction A changes and commits:
+
+        UPDATE balance = 5000
+        COMMIT
+
+    Transaction B executes the same query again:
+
+        SELECT balance → 5000
+
+    The same transaction saw different values for the same row.
+
+
+====================
+3.  REPEATABLE READ
+====================
+
+REPEATABLE READ provides stronger isolation.
+
+Once a transaction reads a row, repeated reads within that transaction generally see a
+consistent snapshot of the data, depending on the database's implementation.
+
+Repeatable Read ensures that if I read the same row multiple times within the same transaction,
+I will get the same result, even if another transaction modifies and commits that row meanwhile.
+
+Transaction B                    Transaction A
+------------------------------------------------
+SELECT balance → 10000
+
+                                 UPDATE → 5000
+                                 COMMIT
+
+SELECT balance → 10000
+
+
+            SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+            BEGIN;
+
+            SELECT balance FROM account WHERE id = 1;
+            -- 10000
+
+            -- Transaction A changes it to 5000 and commits
+
+            SELECT balance FROM account WHERE id = 1;
+            -- Still 10000
+
+            COMMIT;
+
+
+
+====================
+3.  SERIALIZABLE
+====================
+
+This is the strongest standard isolation level.
+
+The database attempts to make concurrent transactions behave as if they were executed
+one after another.
+
+Conceptually:
+    Transaction A
+         ↓
+    Transaction B
+
+instead of:
+    A ────────
+       B ────────
+
+
+=============
+Phantom read
+=============
+
+Running the same query twice and getting a different set of rows because another transaction
+inserted/deleted rows matching the condition.
+
+| Isolation Level  | Dirty Read | Non-repeatable Read | Phantom Read* |
+| ---------------- | ---------: | ------------------: | ------------: |
+| READ UNCOMMITTED |   Possible |            Possible |      Possible |
+| READ COMMITTED   |         ❌ |            Possible |      Possible |
+| REPEATABLE READ  |         ❌ |                  ❌ |  DB-dependent |
+| SERIALIZABLE     |         ❌ |                  ❌ |            ❌ |
+
+
+
+
+
+
+
